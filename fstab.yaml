@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: "https://author-p9606-e71941.adobeaemcloud.com/sites.html/content/liz-eds-demo"
+    url: "https://author-p9606-e71941.adobeaemcloud.com/sites.html/content/liz-eds-demo/"
     type: "markup"
     suffix: ".html"
