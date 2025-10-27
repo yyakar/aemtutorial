@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/liz-eds-demo/:/",
-    "/content/liz-eds-demo:/.helix/config.json",
-    "/content/liz-eds-demo/metadata:/metadata.json"
+    "/content/liz-demo/:/",
+    "/content/liz-demo:/.helix/config.json",
+    "/content/liz-demo/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/liz-eds-demo/"
+    "/content/liz-demo/"
   ]
 }
