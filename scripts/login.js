@@ -65,7 +65,7 @@ export async function initLogin() {
   //   });
   // };
 
-  // Attach login to .button elements - TO DO (create an element specific to login button)
+  // Attach login to .button element - TO DO (create an element specific to login button)
   const buttons = document.querySelectorAll(".button");
   buttons.forEach((btn) => {
     btn.classList.add("login-btn");
