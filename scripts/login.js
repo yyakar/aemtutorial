@@ -66,7 +66,12 @@ export async function initLogin() {
   // };
 
   // Attach login to .button element - TO DO (create an element specific to login button)
-  const buttons = document.querySelectorAll(".button");
+  const buttons = document.querySelectorAll(".login");
+  // Null/empty check
+  if (!buttons || buttons.length === 0) {
+    console.warn("No Login button with class '.login' found — skipping login binding.");
+    return;
+  }
   buttons.forEach((btn) => {
     btn.classList.add("login-btn");
     btn.addEventListener("click", (e) => {
