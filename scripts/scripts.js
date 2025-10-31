@@ -12,6 +12,8 @@ import {
   loadCSS,
 } from './aem.js';
 
+import { initLogin } from './login.js';
+
 /**
  * Moves all the attributes from a given elmenet to another given element.
  * @param {Element} from the element to copy attributes from
@@ -142,6 +144,9 @@ async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+
+  // initialize login AFTER everything else
+  initLogin();
 }
 
 loadPage();
