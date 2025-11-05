@@ -58,7 +58,7 @@
         {
           "component": "select",
           "name": "textAlign",
-          "label": "Text Align",
+          "label": "Alignment",
           "valueType": "string",
           "options": [
             {
