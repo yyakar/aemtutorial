@@ -48,6 +48,20 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "ctaText",
+          "value": "",
+          "label": "Button Label",
+          "valueType": "string"
+        },
+        {
+          "component": "url",
+          "name": "ctaUrl",
+          "value": "",
+          "label": "Button URL",
+          "valueType": "string"
         }
       ]
     }
@@ -55,9 +69,7 @@
   "filters": [
     {
       "id": "cards",
-      "components": [
-        "card"
-      ]
+      "components": ["card"]
     }
   ]
 }
