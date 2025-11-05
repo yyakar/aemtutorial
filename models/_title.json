@@ -59,17 +59,18 @@
           "component": "select",
           "name": "textAlign",
           "label": "Text Align",
+          "valueType": "string",
           "options": [
             {
-              "name": "left",
+              "name": "Left",
               "value": "left"
             },
             {
-              "name": "center",
+              "name": "Center",
               "value": "center"
             },
             {
-              "name": "right",
+              "name": "Right",
               "value": "right"
             }
           ]
