@@ -30,19 +30,23 @@ export default function decorate(block) {
       return a;
     };
     let ctaEl = null;
-    if (maybeCtaCol) {
-      const anchor = maybeCtaCol.querySelector("a[href]");
-      if (anchor) {
-        ctaEl = buildCta({ sourceAnchor: anchor });
-      } else {
-        const raw = (maybeCtaCol.textContent || "").trim();
-        if (raw.includes("|")) {
-          const [label, href] = raw.split("|").map((s) => s.trim());
-          if (label && href) ctaEl = buildCta({ href, label });
-        }
-      }
-    }
+    // if (maybeCtaCol) {
+    //   const anchor = maybeCtaCol.querySelector("a[href]");
+    //   if (anchor) {
+    //     ctaEl = buildCta({ sourceAnchor: anchor });
+    //   } else {
+    //     const raw = (maybeCtaCol.textContent || "").trim();
+    //     if (raw.includes("|")) {
+    //       const [label, href] = raw.split("|").map((s) => s.trim());
+    //       if (label && href) ctaEl = buildCta({ href, label });
+    //     }
+    //   }
+    // }
 
+    if (!ctaEl && bodyCol) {
+      const firstLink = bodyCol.querySelector("a[href]");
+      if (firstLink) ctaEl = buildCta({ sourceAnchor: firstLink });
+    }
     if (ctaEl && bodyCol) {
       if (maybeCtaCol && ctaEl.parentElement !== maybeCtaCol) {
         const src =
