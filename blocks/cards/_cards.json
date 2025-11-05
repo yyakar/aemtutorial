@@ -57,7 +57,7 @@
           "valueType": "string"
         },
         {
-          "component": "url",
+          "component": "text",
           "name": "ctaUrl",
           "value": "",
           "label": "Button URL",
