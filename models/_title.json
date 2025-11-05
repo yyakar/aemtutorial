@@ -54,6 +54,25 @@
               "value": "h6"
             }
           ]
+        },
+        {
+          "component": "select",
+          "name": "textAlign",
+          "label": "Text Align",
+          "options": [
+            {
+              "name": "left",
+              "value": "left"
+            },
+            {
+              "name": "center",
+              "value": "center"
+            },
+            {
+              "name": "right",
+              "value": "right"
+            }
+          ]
         }
       ]
     }
