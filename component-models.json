@@ -159,6 +159,10 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "blue-background",
+            "value": "blue-background"
           }
         ]
       }
