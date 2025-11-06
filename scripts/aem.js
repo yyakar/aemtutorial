@@ -442,46 +442,73 @@ function wrapTextNodes(block) {
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-function applyVariantFromDataset(a) {
-  const variant = a.dataset && a.dataset.variant; // expects data-variant="light-blue"
-  if (variant) {
-    a.classList.add("button");
-    a.classList.add(variant);
-    return true;
-  }
-  return false;
-}
 
-function applyVariantFromWrapper(a) {
-  // find nearest component root which may have data-variant or data-component-properties
-  let root = a.closest("[data-component], [data-path], [data-sly-resource]");
-  if (!root) root = a.parentElement;
+async function applyVariantFromModel(a) {
+  // look for common resource path attributes used by AEM/Universal Editor
+  const root =
+    a.closest(
+      "[data-path], [data-resource-path], [data-cq-component], [data-component-path]"
+    ) ||
+    a.closest("[data-sly-resource]") ||
+    a.parentElement;
   if (!root) return false;
-  // common patterns: data-variant, data-properties JSON, data-component-props
-  if (root.dataset && root.dataset.variant) {
-    a.classList.add("button", root.dataset.variant);
-    return true;
-  }
-  if (root.dataset && root.dataset.properties) {
-    try {
-      const props = JSON.parse(root.dataset.properties);
-      if (props.variant) {
-        a.classList.add("button", props.variant);
-        return true;
+  const path =
+    root.getAttribute("data-path") ||
+    root.getAttribute("data-resource-path") ||
+    root.getAttribute("data-component-path") ||
+    root.getAttribute("data-cq-component") ||
+    root.getAttribute("data-sly-resource");
+  if (!path) return false;
+
+  // ensure path doesn't include selectors; normalise if needed
+  const modelUrl = path.endsWith(".model.json")
+    ? path
+    : path.replace(/\/$/, "") + ".model.json";
+  try {
+    const res = await fetch(modelUrl, { credentials: "same-origin" });
+    if (!res.ok) return false;
+    const json = await res.json();
+    // Try common property locations: variant, properties.variant, ./variant
+    const variant =
+      json.variant ||
+      (json.properties && json.properties.variant) ||
+      json["./variant"];
+    if (variant) {
+      a.classList.add("button", variant);
+      const up = a.parentElement;
+      if (
+        up &&
+        (up.tagName === "P" ||
+          up.tagName === "DIV" ||
+          up.tagName === "STRONG" ||
+          up.tagName === "EM")
+      ) {
+        up.classList.add("button-container");
       }
-    } catch (e) {
-      // ignore parse error
+      return true;
     }
+  } catch (e) {
+    // ignore network/parse errors
   }
   return false;
 }
 
 function decorateButtons(element) {
-  element.querySelectorAll("a").forEach((a) => {
+  element.querySelectorAll("a").forEach(async (a) => {
     a.title = a.title || a.textContent;
-    const applied = applyVariantFromDataset(a) || applyVariantFromWrapper(a);
+    const appliedDataset =
+      (a.dataset && a.dataset.variant) ||
+      (a.closest("[data-variant]") &&
+        a.closest("[data-variant]").dataset.variant);
+    if (appliedDataset) {
+      a.classList.add("button", appliedDataset);
+      return;
+    }
 
-    if (!applied && a.href !== a.textContent) {
+    const appliedModel = await applyVariantFromModel(a);
+    if (appliedModel) return;
+
+    if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector("img")) {
