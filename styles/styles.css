@@ -281,6 +281,10 @@ main .blue-background {
     background-color: #E6F4F9;
 }
 
+main .dark-grey-background {
+    background-color: #545659;
+}
+
 .left {
     text-align: left;
 }

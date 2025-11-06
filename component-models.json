@@ -164,6 +164,10 @@
           {
             "name": "blue-background",
             "value": "blue-background"
+          },
+          {
+            "name": "dark-grey-background",
+            "value": "dark-grey-background"
           }
         ]
       }
