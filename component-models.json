@@ -138,6 +138,10 @@
           {
             "name": "login",
             "value": "login"
+          },
+          {
+            "name": "light-blue",
+            "value": "light-blue"
           }
         ]
       }

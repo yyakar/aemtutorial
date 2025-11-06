@@ -227,6 +227,13 @@ button.secondary {
     color: var(--text-color);
 }
 
+a.button.light-blue,
+button.light-blue {
+    background-color: #E6F4F9;
+    border: none;
+    color: #2D938E;
+}
+
 main img {
     max-width: 100%;
     width: auto;
@@ -283,6 +290,7 @@ main .blue-background {
 
 main .dark-grey-background {
     background-color: #545659;
+    color: #FFFF;
 }
 
 .left {
