@@ -3,11 +3,14 @@
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 24px;
 }
 
 .cards>ul>li {
+    display: flex;
+    flex: 1 1 20rem;
+    flex-direction: column;
     border-radius: 8px;
     background-color: var(--background-color);
 }
@@ -24,12 +27,4 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-}
-
-@media (width >=700px) {
-    .cards>ul {
-        display: flex;
-        flex-direction: row;
-        gap: 24px;
-    }
 }
