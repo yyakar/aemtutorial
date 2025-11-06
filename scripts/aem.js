@@ -443,71 +443,9 @@ function wrapTextNodes(block) {
  * @param {Element} element container element
  */
 
-async function applyVariantFromModel(a) {
-  // look for common resource path attributes used by AEM/Universal Editor
-  const root =
-    a.closest(
-      "[data-path], [data-resource-path], [data-cq-component], [data-component-path]"
-    ) ||
-    a.closest("[data-sly-resource]") ||
-    a.parentElement;
-  if (!root) return false;
-  const path =
-    root.getAttribute("data-path") ||
-    root.getAttribute("data-resource-path") ||
-    root.getAttribute("data-component-path") ||
-    root.getAttribute("data-cq-component") ||
-    root.getAttribute("data-sly-resource");
-  if (!path) return false;
-
-  // ensure path doesn't include selectors; normalise if needed
-  const modelUrl = path.endsWith(".model.json")
-    ? path
-    : path.replace(/\/$/, "") + ".model.json";
-  try {
-    const res = await fetch(modelUrl, { credentials: "same-origin" });
-    if (!res.ok) return false;
-    const json = await res.json();
-    // Try common property locations: variant, properties.variant, ./variant
-    const variant =
-      json.variant ||
-      (json.properties && json.properties.variant) ||
-      json["./variant"];
-    if (variant) {
-      a.classList.add("button", variant);
-      const up = a.parentElement;
-      if (
-        up &&
-        (up.tagName === "P" ||
-          up.tagName === "DIV" ||
-          up.tagName === "STRONG" ||
-          up.tagName === "EM")
-      ) {
-        up.classList.add("button-container");
-      }
-      return true;
-    }
-  } catch (e) {
-    // ignore network/parse errors
-  }
-  return false;
-}
-
 function decorateButtons(element) {
-  element.querySelectorAll("a").forEach(async (a) => {
+  element.querySelectorAll("a").forEach((a) => {
     a.title = a.title || a.textContent;
-    const appliedDataset =
-      (a.dataset && a.dataset.variant) ||
-      (a.closest("[data-variant]") &&
-        a.closest("[data-variant]").dataset.variant);
-    if (appliedDataset) {
-      a.classList.add("button", appliedDataset);
-      return;
-    }
-
-    const appliedModel = await applyVariantFromModel(a);
-    if (appliedModel) return;
-
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
