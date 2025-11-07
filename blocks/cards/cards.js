@@ -30,35 +30,78 @@ export default function decorate(block) {
     const maybeCtaCol = bodies[1] || null;
 
     const buildCta = ({ href, label, sourceAnchor }) => {
-      const a = sourceAnchor || document.createElement("a");
-      // If taking an existing anchor, ensure its text content is preserved
-      if (sourceAnchor) {
-        // prefer existing textContent only if present
-        if (!a.textContent || a.textContent.trim() === "") {
-          a.textContent = label || "Learn more";
+      const normalizedHref = href ? String(href).trim() : "";
+      const normalizedLabel = label ? String(label).trim() : "";
+
+      let srcAnchor = sourceAnchor;
+      if (srcAnchor) {
+        const sourceHref = srcAnchor.getAttribute("href") || "";
+        const sourceText = (srcAnchor.textContent || "").trim();
+        if (!sourceHref.trim() && !sourceText) {
+          srcAnchor = null;
         }
-        if (
-          href &&
-          (!a.getAttribute("href") || a.getAttribute("href") === "#")
-        ) {
-          a.href = href;
-        }
-      } else {
-        a.href = href || "#";
-        a.textContent = label || "Learn more";
       }
+
+      if (!normalizedHref && !normalizedLabel && !srcAnchor) return null;
+
+      const a = srcAnchor || document.createElement("a");
+      if (normalizedHref) a.href = normalizedHref;
+      if (normalizedLabel) a.textContent = normalizedLabel;
       a.classList.add("button", "card__btn");
       return a;
     };
     let ctaEl = null;
 
-    if (!ctaEl && bodyCol) {
+    if (bodyCol) {
+      // try to find an anchor in bodyCol or a label text node
       const firstLink = bodyCol.querySelector("a[href]");
-      if (firstLink) ctaEl = buildCta({ sourceAnchor: firstLink });
+      const labelFromBody = firstLink
+        ? (firstLink.textContent || "").trim()
+        : null;
+
+      // maybeCtaCol can contain the url and/or the label
+      const maybeAnchor = maybeCtaCol
+        ? maybeCtaCol.querySelector("a[href]")
+        : null;
+      const maybeText = maybeCtaCol ? maybeCtaCol.textContent.trim() : null;
+
+      // prefer href from an explicit anchor in maybeCtaCol, fallback to firstLink href
+      let href = null;
+      if (maybeAnchor && maybeAnchor.href) {
+        href = maybeAnchor.href;
+      } else if (firstLink && firstLink.href) {
+        href = firstLink.href;
+      }
+
+      const label = maybeText || labelFromBody || null;
+
+      ctaEl = buildCta({ href, label, sourceAnchor: firstLink });
+      if (ctaEl && maybeCtaCol && maybeCtaCol !== ctaEl.parentElement) {
+        // copy any missing href/label from maybeCtaCol's anchor or text
+        const srcAnchor = maybeAnchor || maybeCtaCol.firstElementChild;
+        if (srcAnchor) moveInstrumentation(srcAnchor, ctaEl);
+
+        if (
+          !ctaEl.getAttribute("href") &&
+          srcAnchor &&
+          srcAnchor.getAttribute("href")
+        ) {
+          ctaEl.href = srcAnchor.getAttribute("href");
+        }
+        if (
+          (!ctaEl.textContent || ctaEl.textContent.trim() === "") &&
+          srcAnchor &&
+          srcAnchor.textContent
+        ) {
+          ctaEl.textContent = srcAnchor.textContent.trim();
+        }
+        maybeCtaCol.remove();
+      }
+
+      if (ctaEl && ctaEl.parentElement !== bodyCol) bodyCol.append(ctaEl);
     }
     if (ctaEl && bodyCol) {
       if (maybeCtaCol && ctaEl.parentElement !== maybeCtaCol) {
-        // try to find anchor or text in maybeCtaCol
         const srcAnchor = maybeCtaCol.querySelector("a[href]");
         const srcElement = srcAnchor || maybeCtaCol.firstElementChild;
         // if srcAnchor exists but ctaEl lacks href, copy it
