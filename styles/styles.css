@@ -18,6 +18,7 @@
     --text-color: #131313;
     --link-color: #3b63fb;
     --link-hover-color: #1d3ecf;
+    --primary-800: #172D3A;
 
     /* fonts */
     --body-font-family: roboto, roboto-fallback, sans-serif;
@@ -85,7 +86,7 @@ body.appear {
 }
 
 header {
-    height: var(--nav-height);
+    /* height: var(--nav-height); */
 }
 
 header .header,

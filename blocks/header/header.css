@@ -1,4 +1,23 @@
 /* header and nav layout */
+nav .nav-tools {
+    .columns.block div {
+        div:last-child {
+            text-align: right;
+            padding-right: 20px;
+        }
+    }
+
+    .button-container {
+        a.button {
+            color: var(--primary-800);
+            background: none;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+    }
+}
+
 nav .nav-sections .columns-3-cols {
     background-color: #373A36;
     display: flex;
