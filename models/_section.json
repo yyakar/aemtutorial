@@ -41,6 +41,10 @@
             {
               "name": "dark-grey-background",
               "value": "dark-grey-background"
+            },
+            {
+              "name": "black-background",
+              "value": "black-background"
             }
           ]
         }
